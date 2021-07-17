@@ -21,12 +21,9 @@ void main() {
   final WeatherApi weatherApi = WeatherApi(apiUrl: weatherApiUrl, client: client);
   final AppEpic appEpic = AppEpic(locationApi: locationApi, weatherApi: weatherApi);
   // final AppMiddleware appMiddleware = AppMiddleware(locationApi: locationApi, weatherApi: weatherApi);
-  final Store<AppState> store = Store<AppState>(
-    reducer,
-    initialState: AppState(),
-    // middleware: appMiddleware.middleware,
-    middleware: <Middleware<AppState>>[EpicMiddleware<AppState>(appEpic.epic)]
-  );
+  final Store<AppState> store = Store<AppState>(reducer, initialState: AppState(),
+      // middleware: appMiddleware.middleware,
+      middleware: <Middleware<AppState>>[EpicMiddleware<AppState>(appEpic.epic)]);
   store.dispatch(const GetLocation());
 
   runApp(WeatherApp(store: store));
