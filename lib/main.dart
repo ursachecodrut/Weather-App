@@ -3,7 +3,6 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:http/http.dart';
 import 'package:redux/redux.dart';
 import 'package:weather_app/src/actions/get_location.dart';
-import 'package:weather_app/src/actions/get_weather.dart';
 import 'package:weather_app/src/data/location_api.dart';
 import 'package:weather_app/src/data/weather_api.dart';
 import 'package:weather_app/src/middleware/app_middleware.dart';

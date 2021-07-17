@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:weather_app/src/container/weather_container.dart';
 import 'package:weather_app/src/models/open_weather.dart';
-import 'package:weather_app/src/models/weather.dart';
 
 class WeatherWidget extends StatelessWidget {
   const WeatherWidget({Key? key}) : super(key: key);
