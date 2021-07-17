@@ -3,11 +3,11 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:http/http.dart';
 import 'package:redux/redux.dart';
 import 'package:redux_epics/redux_epics.dart';
-import 'package:weather_app/src/actions/get_location.dart';
+import 'package:weather_app/src/actions/index.dart';
 import 'package:weather_app/src/data/location_api.dart';
 import 'package:weather_app/src/data/weather_api.dart';
 import 'package:weather_app/src/epics/app_epic.dart';
-import 'package:weather_app/src/models/app_state.dart';
+import 'package:weather_app/src/models/index.dart';
 import 'package:weather_app/src/presentation/home_page.dart';
 import 'package:weather_app/src/reducer/reducer.dart';
 

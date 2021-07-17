@@ -1,11 +1,8 @@
 import 'package:redux/redux.dart';
-import 'package:weather_app/src/actions/get_location.dart';
-import 'package:weather_app/src/actions/get_weather.dart';
+import 'package:weather_app/src/actions/index.dart';
 import 'package:weather_app/src/data/location_api.dart';
 import 'package:weather_app/src/data/weather_api.dart';
-import 'package:weather_app/src/models/app_state.dart';
-import 'package:weather_app/src/models/location.dart';
-import 'package:weather_app/src/models/open_weather.dart';
+import 'package:weather_app/src/models/index.dart';
 
 class AppMiddleware {
   AppMiddleware({required LocationApi locationApi, required WeatherApi weatherApi})

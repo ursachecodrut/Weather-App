@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:http/http.dart';
-import 'package:weather_app/src/models/location.dart';
+import 'package:weather_app/src/models/index.dart';
 
 class LocationApi {
   LocationApi({required String apiUrl, required Client client})

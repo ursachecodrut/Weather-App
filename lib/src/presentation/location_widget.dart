@@ -1,7 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:weather_app/src/container/location_container.dart';
-import 'package:weather_app/src/models/location.dart';
+// import 'package:weather_app/src/models/location.dart';
+import 'package:weather_app/src/models/index.dart';
 
 class LocationWidget extends StatelessWidget {
   const LocationWidget({Key? key}) : super(key: key);

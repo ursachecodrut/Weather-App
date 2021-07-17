@@ -1,10 +1,4 @@
-library location;
-
-import 'package:built_value/built_value.dart';
-import 'package:built_value/serializer.dart';
-import 'package:weather_app/src/models/serializers.dart';
-
-part 'location.g.dart';
+part of models;
 
 abstract class Location implements Built<Location, LocationBuilder> {
   factory Location([void Function(LocationBuilder b) updates]) = _$Location;

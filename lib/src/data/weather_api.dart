@@ -1,8 +1,7 @@
 import 'dart:convert';
 
 import 'package:http/http.dart';
-import 'package:weather_app/src/models/location.dart';
-import 'package:weather_app/src/models/open_weather.dart';
+import 'package:weather_app/src/models/index.dart';
 
 class WeatherApi {
   WeatherApi({required String apiUrl, required Client client})
