@@ -17,8 +17,8 @@ class AppMiddleware {
 
   List<Middleware<AppState>> get middleware {
     return <Middleware<AppState>>[
-      TypedMiddleware<AppState, GetLocation>(_getLocation),
-      TypedMiddleware<AppState, GetWeather>(_getWeather),
+      TypedMiddleware<AppState, GetLocationStart>(_getLocation),
+      TypedMiddleware<AppState, GetWeatherStart>(_getWeather),
     ];
   }
 
@@ -26,10 +26,10 @@ class AppMiddleware {
     next(action);
     try {
       final Location location = await _locationApi.getLocation();
-      store.dispatch(GetLocationSuccessful(location));
-      store.dispatch(const GetWeather());
-    } catch (e) {
-      store.dispatch(GetLocationError(e));
+      store.dispatch(GetLocation.successful(location));
+      store.dispatch(const GetWeatherStart());
+    } catch (error, stackTrace) {
+      store.dispatch(GetLocation.error(error, stackTrace));
     }
   }
 
@@ -38,10 +38,10 @@ class AppMiddleware {
 
     try {
       final OpenWeather weather = await _weatherApi.getWeather(store.state.location!);
-      store.dispatch(GetWeatherSuccessful(weather));
-    } catch (e, s) {
-      print(s);
-      store.dispatch(GetWeatherError(e));
+      store.dispatch(GetWeather.successful(weather));
+    } catch (error, stackTrace) {
+      print(stackTrace);
+      store.dispatch(GetWeather.error(error, stackTrace));
     }
   }
 }

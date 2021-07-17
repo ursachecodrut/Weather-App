@@ -1,6 +1,7 @@
 import 'package:redux_epics/redux_epics.dart';
 import 'package:weather_app/src/actions/get_location.dart';
 import 'package:weather_app/src/actions/get_weather.dart';
+import 'package:weather_app/src/actions/index.dart';
 import 'package:weather_app/src/data/location_api.dart';
 import 'package:weather_app/src/data/weather_api.dart';
 import 'package:weather_app/src/models/app_state.dart';
@@ -18,26 +19,26 @@ class AppEpic {
 
   Epic<AppState> get epic {
     return combineEpics<AppState>(<Epic<AppState>>[
-      TypedEpic<AppState, GetLocation>(_getLocation),
-      TypedEpic<AppState, GetWeather>(_getWeather),
+      TypedEpic<AppState, GetLocationStart>(_getLocation),
+      TypedEpic<AppState, GetWeatherStart>(_getWeather),
     ]);
   }
 
-  Stream<Object> _getLocation(Stream<GetLocation> actions, EpicStore<AppState> store) {
+  Stream<AppAction> _getLocation(Stream<GetLocationStart> actions, EpicStore<AppState> store) {
     return actions //
-        .asyncMap((GetLocation event) => _locationApi.getLocation())
+        .asyncMap((GetLocationStart event) => _locationApi.getLocation())
         .expand((Location location) {
-      return <Object>[
-        GetLocationSuccessful(location),
-        const GetWeather(),
+      return <AppAction>[
+        GetLocation.successful(location),
+        const GetWeatherStart(),
       ];
-    }).onErrorReturnWith((Object error, StackTrace stackTrace) => GetLocationError(error));
+    }).onErrorReturnWith((Object error, StackTrace stackTrace) => GetLocation.error(error, stackTrace));
   }
 
-  Stream<Object> _getWeather(Stream<GetWeather> actions, EpicStore<AppState> store) {
+  Stream<AppAction> _getWeather(Stream<GetWeatherStart> actions, EpicStore<AppState> store) {
     return actions //
-        .asyncMap((GetWeather event) => _weatherApi.getWeather(store.state.location!))
-        .map<Object>((OpenWeather weather) => GetWeatherSuccessful(weather))
-        .onErrorReturnWith((Object error, StackTrace stackTrace) => GetWeatherError(error));
+        .asyncMap((GetWeatherStart event) => _weatherApi.getWeather(store.state.location!))
+        .map((OpenWeather weather) => GetWeather.successful(weather))
+        .onErrorReturnWith((Object error, StackTrace stackTrace) => GetWeather.error(error, stackTrace));
   }
 }
