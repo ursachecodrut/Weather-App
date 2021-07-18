@@ -41,9 +41,11 @@ class WeatherApp extends StatelessWidget {
       child: MaterialApp(
         home: const HomePage(),
         theme: ThemeData(
+          textTheme: Theme.of(context).textTheme.apply(bodyColor: Colors.white, displayColor: Colors.deepPurple),
           primaryColor: Colors.deepPurple,
           accentColor: Colors.deepPurpleAccent,
         ),
+        debugShowCheckedModeBanner: false,
       ),
     );
   }

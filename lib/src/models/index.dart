@@ -11,7 +11,7 @@ part 'location.dart';
 
 part 'open_weather.dart';
 
-part 'current.dart';
+part 'details.dart';
 
 part 'weather.dart';
 

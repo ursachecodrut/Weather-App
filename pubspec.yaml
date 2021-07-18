@@ -19,6 +19,7 @@ dependencies:
   redux: ^5.0.0
   redux_epics: ^0.15.0
   freezed_annotation: ^0.14.2
+  flutter_glow: ^0.2.0
 
 dev_dependencies:
   flutter_test:

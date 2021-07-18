@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:weather_app/src/presentation/location_widget.dart';
+import 'package:weather_app/src/presentation/today_weather_widget.dart';
 import 'package:weather_app/src/presentation/weather_widget.dart';
 
 class HomePage extends StatefulWidget {
@@ -13,18 +13,16 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Weather App'),
-        centerTitle: true,
-      ),
-      body: Container(
-        padding: const EdgeInsets.fromLTRB(0, 10.0, 0, 0),
-        child: Column(
-          children: const <Widget>[
-            WeatherWidget(),
-            LocationWidget(),
-          ],
-        ),
+      backgroundColor: const Color(0xff030317),
+      // appBar: AppBar(
+      //   title: const Text('Weather App'),
+      //   centerTitle: true,
+      // ),
+      body: Column(
+        children: const <Widget>[
+          CurrentWeather(),
+          WeatherWidget(),
+        ],
       ),
     );
   }

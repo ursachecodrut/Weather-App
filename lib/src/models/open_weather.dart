@@ -7,7 +7,11 @@ abstract class OpenWeather implements Built<OpenWeather, OpenWeatherBuilder> {
 
   OpenWeather._();
 
-  Current get current;
+  Details get current;
+
+  BuiltList<Details> get hourly;
+
+  // BuiltList<Details> get daily;
 
   Map<String, dynamic> get json => serializers.serializeWith(serializer, this)! as Map<String, dynamic>;
 

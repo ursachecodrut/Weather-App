@@ -5,5 +5,5 @@ import 'package:weather_app/src/models/index.dart';
 
 part 'serializers.g.dart';
 
-@SerializersFor(<Type>[AppState, Location, OpenWeather, Current, Weather])
+@SerializersFor(<Type>[AppState, Location, OpenWeather, Details, Weather])
 Serializers serializers = (_$serializers.toBuilder()..addPlugin(StandardJsonPlugin())).build();

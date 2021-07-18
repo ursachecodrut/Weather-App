@@ -13,7 +13,7 @@ class WeatherApi {
 
   Future<OpenWeather> getWeather(Location location) async {
     final Uri url = Uri.parse(
-        '$_apiUrl?lat=${location.lat}&lon=${location.lon}&exclude=hourly,minutely&appid=01c9b6a7efc52483cd7bf1c892b3309f');
+        '$_apiUrl?lat=${location.lat}&lon=${location.lon}&exclude=minutely&appid=01c9b6a7efc52483cd7bf1c892b3309f');
     final Response response = await _client.get(url);
 
     if (response.statusCode >= 300) {

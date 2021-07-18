@@ -2,13 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:weather_app/src/container/weather_container.dart';
 import 'package:weather_app/src/models/index.dart';
+import 'package:weather_app/src/presentation/weather_box.dart';
 
 class WeatherWidget extends StatelessWidget {
   const WeatherWidget({Key? key}) : super(key: key);
-
-  double _getCelsiusFromKelvin(double temp) {
-    return temp - 274.15;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -20,56 +17,55 @@ class WeatherWidget extends StatelessWidget {
           );
         }
         return Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Card(
-            elevation: 8.0,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(15),
-            ),
-            color: Theme.of(context).accentColor,
-            child: Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          padding: const EdgeInsets.only(left: 30, right: 30, top: 10),
+          child: Column(
+            children: <Widget>[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  if (weather.current.weather.isNotEmpty)
-                    Column(
-                      children: <Widget>[
-                        Image.network(
-                          'http://openweathermap.org/img/wn/${weather.current.weather[0].icon}@2x.png',
-                        ),
-                        Text(
-                          weather.current.weather[0].main,
-                          style: const TextStyle(
-                            fontSize: 20.0,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ],
+                  const Text(
+                    'Hourly',
+                    style: TextStyle(
+                      fontSize: 25,
+                      fontWeight: FontWeight.bold,
                     ),
-                  Column(
-                    children: <Widget>[
+                  ),
+                  Row(
+                    children: const <Widget>[
                       Text(
-                        '${_getCelsiusFromKelvin(weather.current.temp).toStringAsFixed(1)} \u2103',
-                        style: const TextStyle(
-                          fontSize: 40.0,
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
+                        '24h',
+                        style: TextStyle(
+                          fontSize: 18,
+                          color: Colors.grey,
                         ),
                       ),
-                      Text(
-                        //weather!.current.feels_like
-                        'Feels like ${_getCelsiusFromKelvin(weather.current.feelsLike).toStringAsFixed(1)} \u2103',
-                        style: const TextStyle(
-                          fontSize: 25,
-                          color: Colors.white,
-                        ),
+                      Icon(
+                        Icons.arrow_forward_outlined,
+                        color: Colors.grey,
+                        size: 15,
                       ),
                     ],
-                  )
+                  ),
                 ],
               ),
-            ),
+              const SizedBox(
+                height: 15,
+              ),
+              Container(
+                margin: const EdgeInsets.only(bottom: 30),
+                height: 150,
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: weather.hourly.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return Container(
+                      margin: const EdgeInsets.only(right: 15),
+                      child: WeatherBox(hourly: weather.hourly[index], index: index),
+                    );
+                  },
+                ),
+              ),
+            ],
           ),
         );
       },

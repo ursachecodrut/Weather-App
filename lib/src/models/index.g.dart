@@ -9,7 +9,7 @@ part of models;
 Serializer<AppState> _$appStateSerializer = new _$AppStateSerializer();
 Serializer<Location> _$locationSerializer = new _$LocationSerializer();
 Serializer<OpenWeather> _$openWeatherSerializer = new _$OpenWeatherSerializer();
-Serializer<Current> _$currentSerializer = new _$CurrentSerializer();
+Serializer<Details> _$detailsSerializer = new _$DetailsSerializer();
 Serializer<Weather> _$weatherSerializer = new _$WeatherSerializer();
 
 class _$AppStateSerializer implements StructuredSerializer<AppState> {
@@ -128,7 +128,9 @@ class _$OpenWeatherSerializer implements StructuredSerializer<OpenWeather> {
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object?>[
       'current',
-      serializers.serialize(object.current, specifiedType: const FullType(Current)),
+      serializers.serialize(object.current, specifiedType: const FullType(Details)),
+      'hourly',
+      serializers.serialize(object.hourly, specifiedType: const FullType(BuiltList, const [const FullType(Details)])),
     ];
 
     return result;
@@ -146,7 +148,11 @@ class _$OpenWeatherSerializer implements StructuredSerializer<OpenWeather> {
       final Object? value = iterator.current;
       switch (key) {
         case 'current':
-          result.current.replace(serializers.deserialize(value, specifiedType: const FullType(Current))! as Current);
+          result.current.replace(serializers.deserialize(value, specifiedType: const FullType(Details))! as Details);
+          break;
+        case 'hourly':
+          result.hourly.replace(serializers.deserialize(value,
+              specifiedType: const FullType(BuiltList, const [const FullType(Details)]))! as BuiltList<Object?>);
           break;
       }
     }
@@ -155,20 +161,26 @@ class _$OpenWeatherSerializer implements StructuredSerializer<OpenWeather> {
   }
 }
 
-class _$CurrentSerializer implements StructuredSerializer<Current> {
+class _$DetailsSerializer implements StructuredSerializer<Details> {
   @override
-  final Iterable<Type> types = const [Current, _$Current];
+  final Iterable<Type> types = const [Details, _$Details];
   @override
-  final String wireName = 'Current';
+  final String wireName = 'Details';
 
   @override
-  Iterable<Object?> serialize(Serializers serializers, Current object,
+  Iterable<Object?> serialize(Serializers serializers, Details object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object?>[
       'temp',
       serializers.serialize(object.temp, specifiedType: const FullType(double)),
       'feels_like',
       serializers.serialize(object.feelsLike, specifiedType: const FullType(double)),
+      'humidity',
+      serializers.serialize(object.humidity, specifiedType: const FullType(double)),
+      'wind_speed',
+      serializers.serialize(object.windSpeed, specifiedType: const FullType(double)),
+      'pressure',
+      serializers.serialize(object.pressure, specifiedType: const FullType(double)),
       'weather',
       serializers.serialize(object.weather, specifiedType: const FullType(BuiltList, const [const FullType(Weather)])),
     ];
@@ -177,9 +189,9 @@ class _$CurrentSerializer implements StructuredSerializer<Current> {
   }
 
   @override
-  Current deserialize(Serializers serializers, Iterable<Object?> serialized,
+  Details deserialize(Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new CurrentBuilder();
+    final result = new DetailsBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -192,6 +204,15 @@ class _$CurrentSerializer implements StructuredSerializer<Current> {
           break;
         case 'feels_like':
           result.feelsLike = serializers.deserialize(value, specifiedType: const FullType(double)) as double;
+          break;
+        case 'humidity':
+          result.humidity = serializers.deserialize(value, specifiedType: const FullType(double)) as double;
+          break;
+        case 'wind_speed':
+          result.windSpeed = serializers.deserialize(value, specifiedType: const FullType(double)) as double;
+          break;
+        case 'pressure':
+          result.pressure = serializers.deserialize(value, specifiedType: const FullType(double)) as double;
           break;
         case 'weather':
           result.weather.replace(serializers.deserialize(value,
@@ -469,13 +490,16 @@ class LocationBuilder implements Builder<Location, LocationBuilder> {
 
 class _$OpenWeather extends OpenWeather {
   @override
-  final Current current;
+  final Details current;
+  @override
+  final BuiltList<Details> hourly;
 
   factory _$OpenWeather([void Function(OpenWeatherBuilder)? updates]) =>
       (new OpenWeatherBuilder()..update(updates)).build();
 
-  _$OpenWeather._({required this.current}) : super._() {
+  _$OpenWeather._({required this.current, required this.hourly}) : super._() {
     BuiltValueNullFieldError.checkNotNull(current, 'OpenWeather', 'current');
+    BuiltValueNullFieldError.checkNotNull(hourly, 'OpenWeather', 'hourly');
   }
 
   @override
@@ -487,26 +511,30 @@ class _$OpenWeather extends OpenWeather {
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
-    return other is OpenWeather && current == other.current;
+    return other is OpenWeather && current == other.current && hourly == other.hourly;
   }
 
   @override
   int get hashCode {
-    return $jf($jc(0, current.hashCode));
+    return $jf($jc($jc(0, current.hashCode), hourly.hashCode));
   }
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper('OpenWeather')..add('current', current)).toString();
+    return (newBuiltValueToStringHelper('OpenWeather')..add('current', current)..add('hourly', hourly)).toString();
   }
 }
 
 class OpenWeatherBuilder implements Builder<OpenWeather, OpenWeatherBuilder> {
   _$OpenWeather? _$v;
 
-  CurrentBuilder? _current;
-  CurrentBuilder get current => _$this._current ??= new CurrentBuilder();
-  set current(CurrentBuilder? current) => _$this._current = current;
+  DetailsBuilder? _current;
+  DetailsBuilder get current => _$this._current ??= new DetailsBuilder();
+  set current(DetailsBuilder? current) => _$this._current = current;
+
+  ListBuilder<Details>? _hourly;
+  ListBuilder<Details> get hourly => _$this._hourly ??= new ListBuilder<Details>();
+  set hourly(ListBuilder<Details>? hourly) => _$this._hourly = hourly;
 
   OpenWeatherBuilder();
 
@@ -514,6 +542,7 @@ class OpenWeatherBuilder implements Builder<OpenWeather, OpenWeatherBuilder> {
     final $v = _$v;
     if ($v != null) {
       _current = $v.current.toBuilder();
+      _hourly = $v.hourly.toBuilder();
       _$v = null;
     }
     return this;
@@ -534,12 +563,14 @@ class OpenWeatherBuilder implements Builder<OpenWeather, OpenWeatherBuilder> {
   _$OpenWeather build() {
     _$OpenWeather _$result;
     try {
-      _$result = _$v ?? new _$OpenWeather._(current: current.build());
+      _$result = _$v ?? new _$OpenWeather._(current: current.build(), hourly: hourly.build());
     } catch (_) {
       late String _$failedField;
       try {
         _$failedField = 'current';
         current.build();
+        _$failedField = 'hourly';
+        hourly.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError('OpenWeather', _$failedField, e.toString());
       }
@@ -550,51 +581,79 @@ class OpenWeatherBuilder implements Builder<OpenWeather, OpenWeatherBuilder> {
   }
 }
 
-class _$Current extends Current {
+class _$Details extends Details {
   @override
   final double temp;
   @override
   final double feelsLike;
   @override
+  final double humidity;
+  @override
+  final double windSpeed;
+  @override
+  final double pressure;
+  @override
   final BuiltList<Weather> weather;
 
-  factory _$Current([void Function(CurrentBuilder)? updates]) => (new CurrentBuilder()..update(updates)).build();
+  factory _$Details([void Function(DetailsBuilder)? updates]) => (new DetailsBuilder()..update(updates)).build();
 
-  _$Current._({required this.temp, required this.feelsLike, required this.weather}) : super._() {
-    BuiltValueNullFieldError.checkNotNull(temp, 'Current', 'temp');
-    BuiltValueNullFieldError.checkNotNull(feelsLike, 'Current', 'feelsLike');
-    BuiltValueNullFieldError.checkNotNull(weather, 'Current', 'weather');
+  _$Details._(
+      {required this.temp,
+      required this.feelsLike,
+      required this.humidity,
+      required this.windSpeed,
+      required this.pressure,
+      required this.weather})
+      : super._() {
+    BuiltValueNullFieldError.checkNotNull(temp, 'Details', 'temp');
+    BuiltValueNullFieldError.checkNotNull(feelsLike, 'Details', 'feelsLike');
+    BuiltValueNullFieldError.checkNotNull(humidity, 'Details', 'humidity');
+    BuiltValueNullFieldError.checkNotNull(windSpeed, 'Details', 'windSpeed');
+    BuiltValueNullFieldError.checkNotNull(pressure, 'Details', 'pressure');
+    BuiltValueNullFieldError.checkNotNull(weather, 'Details', 'weather');
   }
 
   @override
-  Current rebuild(void Function(CurrentBuilder) updates) => (toBuilder()..update(updates)).build();
+  Details rebuild(void Function(DetailsBuilder) updates) => (toBuilder()..update(updates)).build();
 
   @override
-  CurrentBuilder toBuilder() => new CurrentBuilder()..replace(this);
+  DetailsBuilder toBuilder() => new DetailsBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
-    return other is Current && temp == other.temp && feelsLike == other.feelsLike && weather == other.weather;
+    return other is Details &&
+        temp == other.temp &&
+        feelsLike == other.feelsLike &&
+        humidity == other.humidity &&
+        windSpeed == other.windSpeed &&
+        pressure == other.pressure &&
+        weather == other.weather;
   }
 
   @override
   int get hashCode {
-    return $jf($jc($jc($jc(0, temp.hashCode), feelsLike.hashCode), weather.hashCode));
+    return $jf($jc(
+        $jc($jc($jc($jc($jc(0, temp.hashCode), feelsLike.hashCode), humidity.hashCode), windSpeed.hashCode),
+            pressure.hashCode),
+        weather.hashCode));
   }
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper('Current')
+    return (newBuiltValueToStringHelper('Details')
           ..add('temp', temp)
           ..add('feelsLike', feelsLike)
+          ..add('humidity', humidity)
+          ..add('windSpeed', windSpeed)
+          ..add('pressure', pressure)
           ..add('weather', weather))
         .toString();
   }
 }
 
-class CurrentBuilder implements Builder<Current, CurrentBuilder> {
-  _$Current? _$v;
+class DetailsBuilder implements Builder<Details, DetailsBuilder> {
+  _$Details? _$v;
 
   double? _temp;
   double? get temp => _$this._temp;
@@ -604,17 +663,32 @@ class CurrentBuilder implements Builder<Current, CurrentBuilder> {
   double? get feelsLike => _$this._feelsLike;
   set feelsLike(double? feelsLike) => _$this._feelsLike = feelsLike;
 
+  double? _humidity;
+  double? get humidity => _$this._humidity;
+  set humidity(double? humidity) => _$this._humidity = humidity;
+
+  double? _windSpeed;
+  double? get windSpeed => _$this._windSpeed;
+  set windSpeed(double? windSpeed) => _$this._windSpeed = windSpeed;
+
+  double? _pressure;
+  double? get pressure => _$this._pressure;
+  set pressure(double? pressure) => _$this._pressure = pressure;
+
   ListBuilder<Weather>? _weather;
   ListBuilder<Weather> get weather => _$this._weather ??= new ListBuilder<Weather>();
   set weather(ListBuilder<Weather>? weather) => _$this._weather = weather;
 
-  CurrentBuilder();
+  DetailsBuilder();
 
-  CurrentBuilder get _$this {
+  DetailsBuilder get _$this {
     final $v = _$v;
     if ($v != null) {
       _temp = $v.temp;
       _feelsLike = $v.feelsLike;
+      _humidity = $v.humidity;
+      _windSpeed = $v.windSpeed;
+      _pressure = $v.pressure;
       _weather = $v.weather.toBuilder();
       _$v = null;
     }
@@ -622,24 +696,27 @@ class CurrentBuilder implements Builder<Current, CurrentBuilder> {
   }
 
   @override
-  void replace(Current other) {
+  void replace(Details other) {
     ArgumentError.checkNotNull(other, 'other');
-    _$v = other as _$Current;
+    _$v = other as _$Details;
   }
 
   @override
-  void update(void Function(CurrentBuilder)? updates) {
+  void update(void Function(DetailsBuilder)? updates) {
     if (updates != null) updates(this);
   }
 
   @override
-  _$Current build() {
-    _$Current _$result;
+  _$Details build() {
+    _$Details _$result;
     try {
       _$result = _$v ??
-          new _$Current._(
-              temp: BuiltValueNullFieldError.checkNotNull(temp, 'Current', 'temp'),
-              feelsLike: BuiltValueNullFieldError.checkNotNull(feelsLike, 'Current', 'feelsLike'),
+          new _$Details._(
+              temp: BuiltValueNullFieldError.checkNotNull(temp, 'Details', 'temp'),
+              feelsLike: BuiltValueNullFieldError.checkNotNull(feelsLike, 'Details', 'feelsLike'),
+              humidity: BuiltValueNullFieldError.checkNotNull(humidity, 'Details', 'humidity'),
+              windSpeed: BuiltValueNullFieldError.checkNotNull(windSpeed, 'Details', 'windSpeed'),
+              pressure: BuiltValueNullFieldError.checkNotNull(pressure, 'Details', 'pressure'),
               weather: weather.build());
     } catch (_) {
       late String _$failedField;
@@ -647,7 +724,7 @@ class CurrentBuilder implements Builder<Current, CurrentBuilder> {
         _$failedField = 'weather';
         weather.build();
       } catch (e) {
-        throw new BuiltValueNestedFieldError('Current', _$failedField, e.toString());
+        throw new BuiltValueNestedFieldError('Details', _$failedField, e.toString());
       }
       rethrow;
     }
