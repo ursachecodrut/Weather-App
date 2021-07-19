@@ -3,7 +3,7 @@ import 'package:weather_app/src/actions/index.dart';
 import 'package:weather_app/src/data/location_api.dart';
 import 'package:weather_app/src/data/weather_api.dart';
 import 'package:weather_app/src/models/index.dart';
-
+// TODO(ursachecodrut): not used
 class AppMiddleware {
   AppMiddleware({required LocationApi locationApi, required WeatherApi weatherApi})
       : _locationApi = locationApi,

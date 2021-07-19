@@ -17,6 +17,7 @@ class WeatherWidget extends StatelessWidget {
           );
         }
         return Padding(
+          // TODO(ursachecodrut): use EdgeInsetsDirectional
           padding: const EdgeInsets.only(left: 30, right: 30, top: 10),
           child: Column(
             children: <Widget>[
@@ -59,6 +60,7 @@ class WeatherWidget extends StatelessWidget {
                   itemCount: weather.hourly.length,
                   itemBuilder: (BuildContext context, int index) {
                     return Container(
+                      // TODO(ursachecodrut): use EdgeInsetsDirectional
                       margin: const EdgeInsets.only(right: 15),
                       child: WeatherBox(hourly: weather.hourly[index], index: index),
                     );

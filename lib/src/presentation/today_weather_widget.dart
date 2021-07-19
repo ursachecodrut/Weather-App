@@ -8,6 +8,13 @@ import 'package:weather_app/src/models/index.dart';
 class CurrentWeather extends StatelessWidget {
   const CurrentWeather({Key? key}) : super(key: key);
 
+  // TODO(ursachecodrut): can be moved to the model
+  // ```dart
+  // double get celsius {
+  //    return temp - 273.15;
+  // }
+  // ```
+  // Then in code you can just say `current.celsius`.
   double _getCelsiusFromKelvin(double temp) {
     return temp - 274.15;
   }
@@ -24,6 +31,7 @@ class CurrentWeather extends StatelessWidget {
         return GlowContainer(
           height: MediaQuery.of(context).size.height - 240,
           margin: const EdgeInsets.all(2),
+          // TODO(ursachecodrut): use EdgeInsetsDirectional
           padding: const EdgeInsets.only(top: 50, left: 30, right: 30),
           glowColor: Theme.of(context).primaryColor,
           borderRadius: const BorderRadius.only(
