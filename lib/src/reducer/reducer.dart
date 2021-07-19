@@ -14,7 +14,7 @@ Reducer<AppState> reducer = combineReducers(<Reducer<AppState>>[
   TypedReducer<AppState, GetWeatherSuccessful>(_getWeatherSuccessful),
   TypedReducer<AppState, GetWeatherError>(_getWeatherError),
 ]);
-
+// TODO(ursachecodrut): not used
 AppState _getLocation(AppState state, GetLocation action) {
   return state.rebuild((AppStateBuilder b) {});
 }
@@ -25,10 +25,12 @@ AppState _getLocationSuccessful(AppState state, GetLocationSuccessful action) {
   });
 }
 
+// TODO(ursachecodrut): not used
 AppState _getLocationError(AppState state, GetLocationError action) {
   return state.rebuild((AppStateBuilder b) {});
 }
 
+// TODO(ursachecodrut): not used
 AppState _getWeather(AppState state, GetWeather action) {
   return state.rebuild((AppStateBuilder b) {});
 }
@@ -39,6 +41,7 @@ AppState _getWeatherSuccessful(AppState state, GetWeatherSuccessful action) {
   });
 }
 
+// TODO(ursachecodrut): not used
 AppState _getWeatherError(AppState state, GetWeatherError action) {
   return state.rebuild((AppStateBuilder b) {});
 }

@@ -11,6 +11,7 @@ import 'package:weather_app/src/models/index.dart';
 import 'package:weather_app/src/presentation/home_page.dart';
 import 'package:weather_app/src/reducer/reducer.dart';
 
+// TODO(ursachecodrut): not used
 const String API_KEY_WEATHER = '01c9b6a7efc52483cd7bf1c892b3309f';
 
 void main() {
@@ -20,9 +21,12 @@ void main() {
   final LocationApi locationApi = LocationApi(apiUrl: locationApiUrl, client: client);
   final WeatherApi weatherApi = WeatherApi(apiUrl: weatherApiUrl, client: client);
   final AppEpic appEpic = AppEpic(locationApi: locationApi, weatherApi: weatherApi);
+  // TODO(ursachecodrut): not used
   // final AppMiddleware appMiddleware = AppMiddleware(locationApi: locationApi, weatherApi: weatherApi);
   final Store<AppState> store = Store<AppState>(reducer, initialState: AppState(),
+      // TODO(ursachecodrut): not used
       // middleware: appMiddleware.middleware,
+      // TODO(ursachecodrut): comma
       middleware: <Middleware<AppState>>[EpicMiddleware<AppState>(appEpic.epic)]);
   store.dispatch(const GetLocation());
 
@@ -41,6 +45,7 @@ class WeatherApp extends StatelessWidget {
       child: MaterialApp(
         home: const HomePage(),
         theme: ThemeData(
+          // TODO(ursachecodrut): comma
           textTheme: Theme.of(context).textTheme.apply(bodyColor: Colors.white, displayColor: Colors.deepPurple),
           primaryColor: Colors.deepPurple,
           accentColor: Colors.deepPurpleAccent,

@@ -14,6 +14,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xff030317),
+      // TODO(ursachecodrut): not used
       // appBar: AppBar(
       //   title: const Text('Weather App'),
       //   centerTitle: true,

@@ -7,6 +7,7 @@ class WeatherBox extends StatelessWidget {
   final Details hourly;
   final int index;
 
+  // TODO(ursachecodrut): same as today_weather_widget.dart
   double _getCelsiusFromKelvin(double temp) {
     return temp - 274.15;
   }

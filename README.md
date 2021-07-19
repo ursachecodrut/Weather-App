@@ -1,3 +1,4 @@
+// TODO(ursachecodrut): maybe explain the project a bit and add some screenshots
 # weather_app
 
 A new Flutter project.
