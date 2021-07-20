@@ -7,14 +7,10 @@ class WeatherBox extends StatelessWidget {
   final Details hourly;
   final int index;
 
-  double _getCelsiusFromKelvin(double temp) {
-    return temp - 274.15;
-  }
-
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(15),
+      padding: const EdgeInsetsDirectional.all(15),
       decoration: BoxDecoration(
         border: Border.all(
           width: 0.4,
@@ -25,7 +21,7 @@ class WeatherBox extends StatelessWidget {
       child: Column(
         children: <Widget>[
           Text(
-            '${_getCelsiusFromKelvin(hourly.temp).toStringAsFixed(1)}\u2103',
+            '${hourly.celsiusTemp.toStringAsFixed(1)}\u2103',
             style: const TextStyle(
               fontSize: 20,
             ),

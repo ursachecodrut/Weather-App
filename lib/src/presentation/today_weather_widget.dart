@@ -8,10 +8,6 @@ import 'package:weather_app/src/models/index.dart';
 class CurrentWeather extends StatelessWidget {
   const CurrentWeather({Key? key}) : super(key: key);
 
-  double _getCelsiusFromKelvin(double temp) {
-    return temp - 274.15;
-  }
-
   @override
   Widget build(BuildContext context) {
     return WeatherContainer(
@@ -22,9 +18,9 @@ class CurrentWeather extends StatelessWidget {
           );
         }
         return GlowContainer(
-          height: MediaQuery.of(context).size.height - 240,
-          margin: const EdgeInsets.all(2),
-          padding: const EdgeInsets.only(top: 50, left: 30, right: 30),
+          height: MediaQuery.of(context).size.height - 250,
+          margin: const EdgeInsetsDirectional.all(2),
+          padding: const EdgeInsetsDirectional.fromSTEB(30, 50, 30, 0),
           glowColor: Theme.of(context).primaryColor,
           borderRadius: const BorderRadius.only(
             bottomLeft: Radius.circular(60),
@@ -69,7 +65,7 @@ class CurrentWeather extends StatelessWidget {
                 ],
               ),
               SizedBox(
-                height: 320,
+                height: 300,
                 child: Stack(
                   children: <Widget>[
                     Image(
@@ -86,7 +82,7 @@ class CurrentWeather extends StatelessWidget {
                         child: Column(
                           children: <Widget>[
                             GlowText(
-                              '${_getCelsiusFromKelvin(weather.current.temp).toStringAsFixed(1)}\u2103',
+                              '${weather.current.celsiusTemp.toStringAsFixed(1)}\u2103',
                               blurRadius: 2,
                               style: const TextStyle(
                                 height: 0.1,
@@ -96,7 +92,7 @@ class CurrentWeather extends StatelessWidget {
                             ),
                             const SizedBox(height: 15),
                             Text(
-                              'Feels like ${_getCelsiusFromKelvin(weather.current.feelsLike).toStringAsFixed(1)}\u2103',
+                              'Feels like ${(weather.current.celsiusFeelsLike).toStringAsFixed(1)}\u2103',
                               style: const TextStyle(
                                 fontSize: 20,
                               ),
@@ -110,7 +106,7 @@ class CurrentWeather extends StatelessWidget {
               ),
               const Divider(color: Colors.white),
               Container(
-                margin: const EdgeInsets.only(top: 5),
+                margin: const EdgeInsetsDirectional.only(top: 5),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
@@ -119,13 +115,13 @@ class CurrentWeather extends StatelessWidget {
                         const Text(
                           'Wind Speed',
                           style: TextStyle(
-                            fontSize: 20,
+                            fontSize: 17,
                           ),
                         ),
                         Text(
                           '${weather.current.windSpeed.toString()}m/s',
                           style: const TextStyle(
-                            fontSize: 17,
+                            fontSize: 13,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -136,13 +132,13 @@ class CurrentWeather extends StatelessWidget {
                         const Text(
                           'Humidity',
                           style: TextStyle(
-                            fontSize: 20,
+                            fontSize: 17,
                           ),
                         ),
                         Text(
                           '${weather.current.humidity.toString()}%',
                           style: const TextStyle(
-                            fontSize: 17,
+                            fontSize: 13,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -153,13 +149,13 @@ class CurrentWeather extends StatelessWidget {
                         const Text(
                           'Pressure',
                           style: TextStyle(
-                            fontSize: 20,
+                            fontSize: 17,
                           ),
                         ),
                         Text(
                           '${weather.current.pressure.toString()}hPa',
                           style: const TextStyle(
-                            fontSize: 17,
+                            fontSize: 13,
                             fontWeight: FontWeight.bold,
                           ),
                         ),

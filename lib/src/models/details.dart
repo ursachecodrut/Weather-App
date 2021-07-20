@@ -9,8 +9,12 @@ abstract class Details implements Built<Details, DetailsBuilder> {
 
   double get temp;
 
+  double get celsiusTemp => temp - 274.15;
+
   @BuiltValueField(wireName: 'feels_like')
   double get feelsLike;
+
+  double get celsiusFeelsLike => feelsLike - 274.15;
 
   double get humidity;
 

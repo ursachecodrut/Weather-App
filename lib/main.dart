@@ -11,8 +11,6 @@ import 'package:weather_app/src/models/index.dart';
 import 'package:weather_app/src/presentation/home_page.dart';
 import 'package:weather_app/src/reducer/reducer.dart';
 
-const String API_KEY_WEATHER = '01c9b6a7efc52483cd7bf1c892b3309f';
-
 void main() {
   const String locationApiUrl = 'http://ip-api.com/json/?fields=61439';
   const String weatherApiUrl = 'https://api.openweathermap.org/data/2.5/onecall';
@@ -20,10 +18,13 @@ void main() {
   final LocationApi locationApi = LocationApi(apiUrl: locationApiUrl, client: client);
   final WeatherApi weatherApi = WeatherApi(apiUrl: weatherApiUrl, client: client);
   final AppEpic appEpic = AppEpic(locationApi: locationApi, weatherApi: weatherApi);
-  // final AppMiddleware appMiddleware = AppMiddleware(locationApi: locationApi, weatherApi: weatherApi);
-  final Store<AppState> store = Store<AppState>(reducer, initialState: AppState(),
-      // middleware: appMiddleware.middleware,
-      middleware: <Middleware<AppState>>[EpicMiddleware<AppState>(appEpic.epic)]);
+  final Store<AppState> store = Store<AppState>(
+    reducer,
+    initialState: AppState(),
+    middleware: <Middleware<AppState>>[
+      EpicMiddleware<AppState>(appEpic.epic),
+    ],
+  );
   store.dispatch(const GetLocation());
 
   runApp(WeatherApp(store: store));
@@ -41,9 +42,12 @@ class WeatherApp extends StatelessWidget {
       child: MaterialApp(
         home: const HomePage(),
         theme: ThemeData(
-          textTheme: Theme.of(context).textTheme.apply(bodyColor: Colors.white, displayColor: Colors.deepPurple),
-          primaryColor: Colors.deepPurple,
-          accentColor: Colors.deepPurpleAccent,
+          textTheme: Theme.of(context).textTheme.apply(
+                bodyColor: Colors.white,
+                displayColor: Colors.deepPurple,
+              ),
+          primaryColor: Colors.blue,
+          accentColor: Colors.blueAccent,
         ),
         debugShowCheckedModeBanner: false,
       ),

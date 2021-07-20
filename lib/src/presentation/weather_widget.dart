@@ -17,7 +17,7 @@ class WeatherWidget extends StatelessWidget {
           );
         }
         return Padding(
-          padding: const EdgeInsets.only(left: 30, right: 30, top: 10),
+          padding: const EdgeInsetsDirectional.fromSTEB(30, 30, 30, 0),
           child: Column(
             children: <Widget>[
               Row(
@@ -52,14 +52,14 @@ class WeatherWidget extends StatelessWidget {
                 height: 15,
               ),
               Container(
-                margin: const EdgeInsets.only(bottom: 30),
+                margin: const EdgeInsetsDirectional.only(bottom: 20),
                 height: 150,
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
                   itemCount: weather.hourly.length,
                   itemBuilder: (BuildContext context, int index) {
                     return Container(
-                      margin: const EdgeInsets.only(right: 15),
+                      margin: const EdgeInsetsDirectional.only(end: 15),
                       child: WeatherBox(hourly: weather.hourly[index], index: index),
                     );
                   },
