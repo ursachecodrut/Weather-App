@@ -7,7 +7,7 @@ class HourBox extends StatelessWidget {
   final Details hourly;
   final int index;
 
-  String convertIndexToHourFormat(int index) {
+  String _convertIndexToHourFormat(int index) {
     final double _core;
     if (index >= 24) {
       index -= 24;
@@ -31,7 +31,7 @@ class HourBox extends StatelessWidget {
       child: Column(
         children: <Widget>[
           Text(
-            convertIndexToHourFormat(index),
+            _convertIndexToHourFormat(index),
             style: const TextStyle(
               fontSize: 20,
             ),
