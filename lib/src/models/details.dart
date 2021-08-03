@@ -23,6 +23,8 @@ abstract class Details implements Built<Details, DetailsBuilder> {
 
   double get pressure;
 
+  double get uvi;
+
   BuiltList<Weather> get weather;
 
   Map<String, dynamic> get json => serializers.serializeWith(serializer, this)! as Map<String, dynamic>;

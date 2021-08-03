@@ -8,11 +8,16 @@ part of 'serializers.dart';
 
 Serializers _$serializers = (new Serializers().toBuilder()
       ..add(AppState.serializer)
+      ..add(DayDetails.serializer)
+      ..add(DayTemp.serializer)
       ..add(Details.serializer)
       ..add(Location.serializer)
       ..add(OpenWeather.serializer)
       ..add(Weather.serializer)
       ..addBuilderFactory(const FullType(BuiltList, const [const FullType(Details)]), () => new ListBuilder<Details>())
+      ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(DayDetails)]), () => new ListBuilder<DayDetails>())
+      ..addBuilderFactory(const FullType(BuiltList, const [const FullType(Weather)]), () => new ListBuilder<Weather>())
       ..addBuilderFactory(const FullType(BuiltList, const [const FullType(Weather)]), () => new ListBuilder<Weather>()))
     .build();
 

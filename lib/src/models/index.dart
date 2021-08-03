@@ -15,4 +15,8 @@ part 'details.dart';
 
 part 'weather.dart';
 
+part 'day_details.dart';
+
+part 'day_temp.dart';
+
 part 'index.g.dart';

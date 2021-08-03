@@ -1,27 +1,37 @@
 import 'package:flutter/material.dart';
 import 'package:weather_app/src/models/index.dart';
 
-class WeatherBox extends StatelessWidget {
-  const WeatherBox({Key? key, required this.hourly, required this.index}) : super(key: key);
+class HourBox extends StatelessWidget {
+  const HourBox({Key? key, required this.hourly, required this.index}) : super(key: key);
 
   final Details hourly;
   final int index;
+
+  String convertIndexToHourFormat(int index) {
+    final double _core;
+    if (index >= 24) {
+      index -= 24;
+      _core = index / 10;
+      if (_core.toInt() > 0) {
+        return '$index:00';
+      }
+      return '0$index:00';
+    }
+    _core = index / 10;
+    if (_core.toInt() > 0) {
+      return '$index:00';
+    }
+    return '0$index:00';
+  }
 
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsetsDirectional.all(15),
-      decoration: BoxDecoration(
-        border: Border.all(
-          width: 0.4,
-          color: Colors.white,
-        ),
-        borderRadius: BorderRadius.circular(35),
-      ),
       child: Column(
         children: <Widget>[
           Text(
-            '${hourly.celsiusTemp.toStringAsFixed(1)}\u2103',
+            convertIndexToHourFormat(index),
             style: const TextStyle(
               fontSize: 20,
             ),
@@ -38,10 +48,10 @@ class WeatherBox extends StatelessWidget {
             height: 5,
           ),
           Text(
-            hourly.weather[0].main,
+            '${hourly.celsiusTemp.toStringAsFixed(1)}\u00B0',
             style: const TextStyle(
               fontSize: 16,
-              color: Colors.grey,
+              color: Colors.white,
             ),
           ),
         ],

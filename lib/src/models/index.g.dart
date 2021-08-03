@@ -11,6 +11,8 @@ Serializer<Location> _$locationSerializer = new _$LocationSerializer();
 Serializer<OpenWeather> _$openWeatherSerializer = new _$OpenWeatherSerializer();
 Serializer<Details> _$detailsSerializer = new _$DetailsSerializer();
 Serializer<Weather> _$weatherSerializer = new _$WeatherSerializer();
+Serializer<DayDetails> _$dayDetailsSerializer = new _$DayDetailsSerializer();
+Serializer<DayTemp> _$dayTempSerializer = new _$DayTempSerializer();
 
 class _$AppStateSerializer implements StructuredSerializer<AppState> {
   @override
@@ -131,6 +133,8 @@ class _$OpenWeatherSerializer implements StructuredSerializer<OpenWeather> {
       serializers.serialize(object.current, specifiedType: const FullType(Details)),
       'hourly',
       serializers.serialize(object.hourly, specifiedType: const FullType(BuiltList, const [const FullType(Details)])),
+      'daily',
+      serializers.serialize(object.daily, specifiedType: const FullType(BuiltList, const [const FullType(DayDetails)])),
     ];
 
     return result;
@@ -153,6 +157,10 @@ class _$OpenWeatherSerializer implements StructuredSerializer<OpenWeather> {
         case 'hourly':
           result.hourly.replace(serializers.deserialize(value,
               specifiedType: const FullType(BuiltList, const [const FullType(Details)]))! as BuiltList<Object?>);
+          break;
+        case 'daily':
+          result.daily.replace(serializers.deserialize(value,
+              specifiedType: const FullType(BuiltList, const [const FullType(DayDetails)]))! as BuiltList<Object?>);
           break;
       }
     }
@@ -181,6 +189,8 @@ class _$DetailsSerializer implements StructuredSerializer<Details> {
       serializers.serialize(object.windSpeed, specifiedType: const FullType(double)),
       'pressure',
       serializers.serialize(object.pressure, specifiedType: const FullType(double)),
+      'uvi',
+      serializers.serialize(object.uvi, specifiedType: const FullType(double)),
       'weather',
       serializers.serialize(object.weather, specifiedType: const FullType(BuiltList, const [const FullType(Weather)])),
     ];
@@ -213,6 +223,9 @@ class _$DetailsSerializer implements StructuredSerializer<Details> {
           break;
         case 'pressure':
           result.pressure = serializers.deserialize(value, specifiedType: const FullType(double)) as double;
+          break;
+        case 'uvi':
+          result.uvi = serializers.deserialize(value, specifiedType: const FullType(double)) as double;
           break;
         case 'weather':
           result.weather.replace(serializers.deserialize(value,
@@ -270,6 +283,93 @@ class _$WeatherSerializer implements StructuredSerializer<Weather> {
           break;
         case 'icon':
           result.icon = serializers.deserialize(value, specifiedType: const FullType(String)) as String;
+          break;
+      }
+    }
+
+    return result.build();
+  }
+}
+
+class _$DayDetailsSerializer implements StructuredSerializer<DayDetails> {
+  @override
+  final Iterable<Type> types = const [DayDetails, _$DayDetails];
+  @override
+  final String wireName = 'DayDetails';
+
+  @override
+  Iterable<Object?> serialize(Serializers serializers, DayDetails object,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = <Object?>[
+      'weather',
+      serializers.serialize(object.weather, specifiedType: const FullType(BuiltList, const [const FullType(Weather)])),
+      'temp',
+      serializers.serialize(object.temp, specifiedType: const FullType(DayTemp)),
+    ];
+
+    return result;
+  }
+
+  @override
+  DayDetails deserialize(Serializers serializers, Iterable<Object?> serialized,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = new DayDetailsBuilder();
+
+    final iterator = serialized.iterator;
+    while (iterator.moveNext()) {
+      final key = iterator.current as String;
+      iterator.moveNext();
+      final Object? value = iterator.current;
+      switch (key) {
+        case 'weather':
+          result.weather.replace(serializers.deserialize(value,
+              specifiedType: const FullType(BuiltList, const [const FullType(Weather)]))! as BuiltList<Object?>);
+          break;
+        case 'temp':
+          result.temp.replace(serializers.deserialize(value, specifiedType: const FullType(DayTemp))! as DayTemp);
+          break;
+      }
+    }
+
+    return result.build();
+  }
+}
+
+class _$DayTempSerializer implements StructuredSerializer<DayTemp> {
+  @override
+  final Iterable<Type> types = const [DayTemp, _$DayTemp];
+  @override
+  final String wireName = 'DayTemp';
+
+  @override
+  Iterable<Object?> serialize(Serializers serializers, DayTemp object,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = <Object?>[
+      'day',
+      serializers.serialize(object.day, specifiedType: const FullType(double)),
+      'night',
+      serializers.serialize(object.night, specifiedType: const FullType(double)),
+    ];
+
+    return result;
+  }
+
+  @override
+  DayTemp deserialize(Serializers serializers, Iterable<Object?> serialized,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = new DayTempBuilder();
+
+    final iterator = serialized.iterator;
+    while (iterator.moveNext()) {
+      final key = iterator.current as String;
+      iterator.moveNext();
+      final Object? value = iterator.current;
+      switch (key) {
+        case 'day':
+          result.day = serializers.deserialize(value, specifiedType: const FullType(double)) as double;
+          break;
+        case 'night':
+          result.night = serializers.deserialize(value, specifiedType: const FullType(double)) as double;
           break;
       }
     }
@@ -493,13 +593,16 @@ class _$OpenWeather extends OpenWeather {
   final Details current;
   @override
   final BuiltList<Details> hourly;
+  @override
+  final BuiltList<DayDetails> daily;
 
   factory _$OpenWeather([void Function(OpenWeatherBuilder)? updates]) =>
       (new OpenWeatherBuilder()..update(updates)).build();
 
-  _$OpenWeather._({required this.current, required this.hourly}) : super._() {
+  _$OpenWeather._({required this.current, required this.hourly, required this.daily}) : super._() {
     BuiltValueNullFieldError.checkNotNull(current, 'OpenWeather', 'current');
     BuiltValueNullFieldError.checkNotNull(hourly, 'OpenWeather', 'hourly');
+    BuiltValueNullFieldError.checkNotNull(daily, 'OpenWeather', 'daily');
   }
 
   @override
@@ -511,17 +614,21 @@ class _$OpenWeather extends OpenWeather {
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
-    return other is OpenWeather && current == other.current && hourly == other.hourly;
+    return other is OpenWeather && current == other.current && hourly == other.hourly && daily == other.daily;
   }
 
   @override
   int get hashCode {
-    return $jf($jc($jc(0, current.hashCode), hourly.hashCode));
+    return $jf($jc($jc($jc(0, current.hashCode), hourly.hashCode), daily.hashCode));
   }
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper('OpenWeather')..add('current', current)..add('hourly', hourly)).toString();
+    return (newBuiltValueToStringHelper('OpenWeather')
+          ..add('current', current)
+          ..add('hourly', hourly)
+          ..add('daily', daily))
+        .toString();
   }
 }
 
@@ -536,6 +643,10 @@ class OpenWeatherBuilder implements Builder<OpenWeather, OpenWeatherBuilder> {
   ListBuilder<Details> get hourly => _$this._hourly ??= new ListBuilder<Details>();
   set hourly(ListBuilder<Details>? hourly) => _$this._hourly = hourly;
 
+  ListBuilder<DayDetails>? _daily;
+  ListBuilder<DayDetails> get daily => _$this._daily ??= new ListBuilder<DayDetails>();
+  set daily(ListBuilder<DayDetails>? daily) => _$this._daily = daily;
+
   OpenWeatherBuilder();
 
   OpenWeatherBuilder get _$this {
@@ -543,6 +654,7 @@ class OpenWeatherBuilder implements Builder<OpenWeather, OpenWeatherBuilder> {
     if ($v != null) {
       _current = $v.current.toBuilder();
       _hourly = $v.hourly.toBuilder();
+      _daily = $v.daily.toBuilder();
       _$v = null;
     }
     return this;
@@ -563,7 +675,7 @@ class OpenWeatherBuilder implements Builder<OpenWeather, OpenWeatherBuilder> {
   _$OpenWeather build() {
     _$OpenWeather _$result;
     try {
-      _$result = _$v ?? new _$OpenWeather._(current: current.build(), hourly: hourly.build());
+      _$result = _$v ?? new _$OpenWeather._(current: current.build(), hourly: hourly.build(), daily: daily.build());
     } catch (_) {
       late String _$failedField;
       try {
@@ -571,6 +683,8 @@ class OpenWeatherBuilder implements Builder<OpenWeather, OpenWeatherBuilder> {
         current.build();
         _$failedField = 'hourly';
         hourly.build();
+        _$failedField = 'daily';
+        daily.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError('OpenWeather', _$failedField, e.toString());
       }
@@ -593,6 +707,8 @@ class _$Details extends Details {
   @override
   final double pressure;
   @override
+  final double uvi;
+  @override
   final BuiltList<Weather> weather;
 
   factory _$Details([void Function(DetailsBuilder)? updates]) => (new DetailsBuilder()..update(updates)).build();
@@ -603,6 +719,7 @@ class _$Details extends Details {
       required this.humidity,
       required this.windSpeed,
       required this.pressure,
+      required this.uvi,
       required this.weather})
       : super._() {
     BuiltValueNullFieldError.checkNotNull(temp, 'Details', 'temp');
@@ -610,6 +727,7 @@ class _$Details extends Details {
     BuiltValueNullFieldError.checkNotNull(humidity, 'Details', 'humidity');
     BuiltValueNullFieldError.checkNotNull(windSpeed, 'Details', 'windSpeed');
     BuiltValueNullFieldError.checkNotNull(pressure, 'Details', 'pressure');
+    BuiltValueNullFieldError.checkNotNull(uvi, 'Details', 'uvi');
     BuiltValueNullFieldError.checkNotNull(weather, 'Details', 'weather');
   }
 
@@ -628,14 +746,17 @@ class _$Details extends Details {
         humidity == other.humidity &&
         windSpeed == other.windSpeed &&
         pressure == other.pressure &&
+        uvi == other.uvi &&
         weather == other.weather;
   }
 
   @override
   int get hashCode {
     return $jf($jc(
-        $jc($jc($jc($jc($jc(0, temp.hashCode), feelsLike.hashCode), humidity.hashCode), windSpeed.hashCode),
-            pressure.hashCode),
+        $jc(
+            $jc($jc($jc($jc($jc(0, temp.hashCode), feelsLike.hashCode), humidity.hashCode), windSpeed.hashCode),
+                pressure.hashCode),
+            uvi.hashCode),
         weather.hashCode));
   }
 
@@ -647,6 +768,7 @@ class _$Details extends Details {
           ..add('humidity', humidity)
           ..add('windSpeed', windSpeed)
           ..add('pressure', pressure)
+          ..add('uvi', uvi)
           ..add('weather', weather))
         .toString();
   }
@@ -675,6 +797,10 @@ class DetailsBuilder implements Builder<Details, DetailsBuilder> {
   double? get pressure => _$this._pressure;
   set pressure(double? pressure) => _$this._pressure = pressure;
 
+  double? _uvi;
+  double? get uvi => _$this._uvi;
+  set uvi(double? uvi) => _$this._uvi = uvi;
+
   ListBuilder<Weather>? _weather;
   ListBuilder<Weather> get weather => _$this._weather ??= new ListBuilder<Weather>();
   set weather(ListBuilder<Weather>? weather) => _$this._weather = weather;
@@ -689,6 +815,7 @@ class DetailsBuilder implements Builder<Details, DetailsBuilder> {
       _humidity = $v.humidity;
       _windSpeed = $v.windSpeed;
       _pressure = $v.pressure;
+      _uvi = $v.uvi;
       _weather = $v.weather.toBuilder();
       _$v = null;
     }
@@ -717,6 +844,7 @@ class DetailsBuilder implements Builder<Details, DetailsBuilder> {
               humidity: BuiltValueNullFieldError.checkNotNull(humidity, 'Details', 'humidity'),
               windSpeed: BuiltValueNullFieldError.checkNotNull(windSpeed, 'Details', 'windSpeed'),
               pressure: BuiltValueNullFieldError.checkNotNull(pressure, 'Details', 'pressure'),
+              uvi: BuiltValueNullFieldError.checkNotNull(uvi, 'Details', 'uvi'),
               weather: weather.build());
     } catch (_) {
       late String _$failedField;
@@ -836,6 +964,180 @@ class WeatherBuilder implements Builder<Weather, WeatherBuilder> {
             main: BuiltValueNullFieldError.checkNotNull(main, 'Weather', 'main'),
             description: BuiltValueNullFieldError.checkNotNull(description, 'Weather', 'description'),
             icon: BuiltValueNullFieldError.checkNotNull(icon, 'Weather', 'icon'));
+    replace(_$result);
+    return _$result;
+  }
+}
+
+class _$DayDetails extends DayDetails {
+  @override
+  final BuiltList<Weather> weather;
+  @override
+  final DayTemp temp;
+
+  factory _$DayDetails([void Function(DayDetailsBuilder)? updates]) =>
+      (new DayDetailsBuilder()..update(updates)).build();
+
+  _$DayDetails._({required this.weather, required this.temp}) : super._() {
+    BuiltValueNullFieldError.checkNotNull(weather, 'DayDetails', 'weather');
+    BuiltValueNullFieldError.checkNotNull(temp, 'DayDetails', 'temp');
+  }
+
+  @override
+  DayDetails rebuild(void Function(DayDetailsBuilder) updates) => (toBuilder()..update(updates)).build();
+
+  @override
+  DayDetailsBuilder toBuilder() => new DayDetailsBuilder()..replace(this);
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(other, this)) return true;
+    return other is DayDetails && weather == other.weather && temp == other.temp;
+  }
+
+  @override
+  int get hashCode {
+    return $jf($jc($jc(0, weather.hashCode), temp.hashCode));
+  }
+
+  @override
+  String toString() {
+    return (newBuiltValueToStringHelper('DayDetails')..add('weather', weather)..add('temp', temp)).toString();
+  }
+}
+
+class DayDetailsBuilder implements Builder<DayDetails, DayDetailsBuilder> {
+  _$DayDetails? _$v;
+
+  ListBuilder<Weather>? _weather;
+  ListBuilder<Weather> get weather => _$this._weather ??= new ListBuilder<Weather>();
+  set weather(ListBuilder<Weather>? weather) => _$this._weather = weather;
+
+  DayTempBuilder? _temp;
+  DayTempBuilder get temp => _$this._temp ??= new DayTempBuilder();
+  set temp(DayTempBuilder? temp) => _$this._temp = temp;
+
+  DayDetailsBuilder();
+
+  DayDetailsBuilder get _$this {
+    final $v = _$v;
+    if ($v != null) {
+      _weather = $v.weather.toBuilder();
+      _temp = $v.temp.toBuilder();
+      _$v = null;
+    }
+    return this;
+  }
+
+  @override
+  void replace(DayDetails other) {
+    ArgumentError.checkNotNull(other, 'other');
+    _$v = other as _$DayDetails;
+  }
+
+  @override
+  void update(void Function(DayDetailsBuilder)? updates) {
+    if (updates != null) updates(this);
+  }
+
+  @override
+  _$DayDetails build() {
+    _$DayDetails _$result;
+    try {
+      _$result = _$v ?? new _$DayDetails._(weather: weather.build(), temp: temp.build());
+    } catch (_) {
+      late String _$failedField;
+      try {
+        _$failedField = 'weather';
+        weather.build();
+        _$failedField = 'temp';
+        temp.build();
+      } catch (e) {
+        throw new BuiltValueNestedFieldError('DayDetails', _$failedField, e.toString());
+      }
+      rethrow;
+    }
+    replace(_$result);
+    return _$result;
+  }
+}
+
+class _$DayTemp extends DayTemp {
+  @override
+  final double day;
+  @override
+  final double night;
+
+  factory _$DayTemp([void Function(DayTempBuilder)? updates]) => (new DayTempBuilder()..update(updates)).build();
+
+  _$DayTemp._({required this.day, required this.night}) : super._() {
+    BuiltValueNullFieldError.checkNotNull(day, 'DayTemp', 'day');
+    BuiltValueNullFieldError.checkNotNull(night, 'DayTemp', 'night');
+  }
+
+  @override
+  DayTemp rebuild(void Function(DayTempBuilder) updates) => (toBuilder()..update(updates)).build();
+
+  @override
+  DayTempBuilder toBuilder() => new DayTempBuilder()..replace(this);
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(other, this)) return true;
+    return other is DayTemp && day == other.day && night == other.night;
+  }
+
+  @override
+  int get hashCode {
+    return $jf($jc($jc(0, day.hashCode), night.hashCode));
+  }
+
+  @override
+  String toString() {
+    return (newBuiltValueToStringHelper('DayTemp')..add('day', day)..add('night', night)).toString();
+  }
+}
+
+class DayTempBuilder implements Builder<DayTemp, DayTempBuilder> {
+  _$DayTemp? _$v;
+
+  double? _day;
+  double? get day => _$this._day;
+  set day(double? day) => _$this._day = day;
+
+  double? _night;
+  double? get night => _$this._night;
+  set night(double? night) => _$this._night = night;
+
+  DayTempBuilder();
+
+  DayTempBuilder get _$this {
+    final $v = _$v;
+    if ($v != null) {
+      _day = $v.day;
+      _night = $v.night;
+      _$v = null;
+    }
+    return this;
+  }
+
+  @override
+  void replace(DayTemp other) {
+    ArgumentError.checkNotNull(other, 'other');
+    _$v = other as _$DayTemp;
+  }
+
+  @override
+  void update(void Function(DayTempBuilder)? updates) {
+    if (updates != null) updates(this);
+  }
+
+  @override
+  _$DayTemp build() {
+    final _$result = _$v ??
+        new _$DayTemp._(
+            day: BuiltValueNullFieldError.checkNotNull(day, 'DayTemp', 'day'),
+            night: BuiltValueNullFieldError.checkNotNull(night, 'DayTemp', 'night'));
     replace(_$result);
     return _$result;
   }

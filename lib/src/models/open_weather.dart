@@ -11,6 +11,8 @@ abstract class OpenWeather implements Built<OpenWeather, OpenWeatherBuilder> {
 
   BuiltList<Details> get hourly;
 
+  BuiltList<DayDetails> get daily;
+
   Map<String, dynamic> get json => serializers.serializeWith(serializer, this)! as Map<String, dynamic>;
 
   static Serializer<OpenWeather> get serializer => _$openWeatherSerializer;
