@@ -31,7 +31,7 @@ class _HomePageState extends State<HomePage> {
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
-            colors: [
+            colors: <Color>[
               Theme.of(context).primaryColor,
               Theme.of(context).accentColor,
             ],
