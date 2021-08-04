@@ -1,9 +1,8 @@
 import 'dart:convert';
 
 import 'package:http/http.dart';
+import 'package:weather_app/src/data/env.dart';
 import 'package:weather_app/src/models/index.dart';
-
-const String API_KEY = '01c9b6a7efc52483cd7bf1c892b3309f';
 
 class WeatherApi {
   WeatherApi({required String apiUrl, required Client client})
