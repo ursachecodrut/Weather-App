@@ -26,16 +26,27 @@ class _HomePageState extends State<HomePage> {
         shadowColor: Theme.of(context).accentColor,
         elevation: 10,
       ),
-      backgroundColor: Colors.lightBlue,
-      body: ListView(
-        children: const <Widget>[
-          CurrentWeather(),
-          HourlyWidget(),
-          DailyWidget(),
-          HumidityWidget(),
-          Divider(color: Colors.white54),
-          WindWidget(),
-        ],
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [
+              Theme.of(context).primaryColor,
+              Theme.of(context).accentColor,
+            ],
+          ),
+        ),
+        child: ListView(
+          children: const <Widget>[
+            CurrentWeather(),
+            HourlyWidget(),
+            DailyWidget(),
+            HumidityWidget(),
+            Divider(color: Colors.white54),
+            WindWidget(),
+          ],
+        ),
       ),
     );
   }

@@ -20,7 +20,6 @@ class WeatherApi {
     if (response.statusCode >= 300) {
       throw StateError(response.body);
     }
-    // log(response.body);
     return OpenWeather.fromJson(jsonDecode(response.body));
   }
 }

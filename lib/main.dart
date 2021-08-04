@@ -45,8 +45,8 @@ class WeatherApp extends StatelessWidget {
           textTheme: Theme.of(context).textTheme.apply(
                 bodyColor: Colors.white,
               ),
-          primaryColor: Colors.lightBlue,
-          accentColor: Colors.blue,
+          primaryColor: const Color(0xff48CAE4),
+          accentColor: const Color(0xff023e8a),
         ),
         debugShowCheckedModeBanner: false,
       ),
