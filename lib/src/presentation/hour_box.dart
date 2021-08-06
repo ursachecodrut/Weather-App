@@ -26,8 +26,12 @@ class HourBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final double _screenWidth = MediaQuery.of(context).size.width;
+    final double _boxWidth = MediaQuery.of(context).size.width / 4;
+    final double _boxPadding = (_screenWidth - 4 * _boxWidth) / 8;
     return Container(
-      padding: const EdgeInsetsDirectional.all(15),
+      width: _boxWidth,
+      margin: EdgeInsetsDirectional.fromSTEB(_boxPadding, 10, _boxPadding, 10),
       child: Column(
         children: <Widget>[
           Text(

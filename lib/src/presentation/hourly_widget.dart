@@ -7,6 +7,11 @@ import 'package:weather_app/src/presentation/hour_box.dart';
 class HourlyWidget extends StatelessWidget {
   const HourlyWidget({Key? key}) : super(key: key);
 
+  int _getCurrentHour() {
+    final DateTime now = DateTime.now();
+    return int.parse(now.toString().substring(11, 13));
+  }
+
   @override
   Widget build(BuildContext context) {
     return WeatherContainer(
@@ -59,10 +64,14 @@ class HourlyWidget extends StatelessWidget {
                 scrollDirection: Axis.horizontal,
                 itemCount: weather.hourly.length,
                 itemBuilder: (BuildContext context, int index) {
-                  return Container(
-                    margin: const EdgeInsetsDirectional.only(end: 15),
-                    child: HourBox(hourly: weather.hourly[index], index: index),
-                  );
+                  //44
+                  if (index >= _getCurrentHour())
+                    return Container(
+                      margin: const EdgeInsetsDirectional.fromSTEB(0, 5, 0, 5),
+                      child: HourBox(hourly: weather.hourly[index], index: index),
+                    );
+                  else
+                    return const SizedBox.shrink();
                 },
               ),
             ),

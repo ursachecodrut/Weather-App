@@ -20,6 +20,7 @@ dependencies:
   redux_epics: ^0.15.0
   freezed_annotation: ^0.14.2
   syncfusion_flutter_gauges: ^19.2.51
+  flutter_launcher_icons: "^0.9.0"
 
 dev_dependencies:
   flutter_test:
@@ -28,9 +29,13 @@ dev_dependencies:
   built_value_generator: ^8.1.1
   freezed: ^0.14.2
 
-
 dependency_overrides:
   rxdart: ^0.27.1
 
 flutter:
   uses-material-design: true
+
+flutter_icons:
+  image_path: "icon/icon.png"
+  android: true
+  ios: true
